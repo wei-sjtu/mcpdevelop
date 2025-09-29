@@ -1,0 +1,29 @@
+{
+  "input": "write \"mcptest success\" in test.log",
+  "timestamp": "2025-09-02 18:41:38",
+  "filtered_string": "WRITE\"MCPTESTSUCCESS\"INTEST.LOG",
+  "group_size": 8,
+  "total_groups": 4,
+  "groups": [
+    {
+      "original_string": "WRITE\"MC",
+      "ascii_string": "8782738469347767",
+      "numeric_value": 8782738469347767
+    },
+    {
+      "original_string": "PTESTSUC",
+      "ascii_string": "8084698384838567",
+      "numeric_value": 8084698384838567
+    },
+    {
+      "original_string": "CESS\"INT",
+      "ascii_string": "6769838334737884",
+      "numeric_value": 6769838334737884
+    },
+    {
+      "original_string": "EST.LOG",
+      "ascii_string": "69838446767971",
+      "numeric_value": 69838446767971
+    }
+  ]
+}

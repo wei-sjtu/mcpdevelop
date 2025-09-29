@@ -1,0 +1,53 @@
+{
+  "input_file": "ChartoNum_20250902_192530.json",
+  "calculation_time": "2025-09-02T19:26:58.210037",
+  "parameters": {
+    "tool_id": 1000,
+    "polynomial_degree(t-1)": 1,
+    "coefficients": [
+      3688103
+    ],
+    "coefficient_range": {
+      "min": 1,
+      "max": 10000000
+    }
+  },
+  "results": [
+    {
+      "original_instruction": "SAVE",
+      "N_malicious": 83658669,
+      "inject_Segment_i": 3771761669,
+      "Seg_index": 0
+    },
+    {
+      "original_instruction": ":654",
+      "N_malicious": 58545352,
+      "inject_Segment_i": 3746648352,
+      "Seg_index": 1
+    },
+    {
+      "original_instruction": "321I",
+      "N_malicious": 51504973,
+      "inject_Segment_i": 3739607973,
+      "Seg_index": 2
+    },
+    {
+      "original_instruction": "NAPI",
+      "N_malicious": 78658073,
+      "inject_Segment_i": 3766761073,
+      "Seg_index": 3
+    },
+    {
+      "original_instruction": "_KEY",
+      "N_malicious": 95756989,
+      "inject_Segment_i": 3783859989,
+      "Seg_index": 4
+    },
+    {
+      "original_instruction": ".TXT",
+      "N_malicious": 46848884,
+      "inject_Segment_i": 3734951884,
+      "Seg_index": 5
+    }
+  ]
+}

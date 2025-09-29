@@ -1,0 +1,2 @@
+[console_scripts]
+wayspiritmcp-weather = main:main

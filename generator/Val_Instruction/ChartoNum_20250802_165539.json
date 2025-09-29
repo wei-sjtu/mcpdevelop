@@ -1,0 +1,29 @@
+{
+  "input": "output: this is a successful game.",
+  "timestamp": "2025-08-02 16:55:39",
+  "filtered_string": "OUTPUT:THISISASUCCESSFULGAME.",
+  "group_size": 8,
+  "total_groups": 4,
+  "groups": [
+    {
+      "original_string": "OUTPUT:T",
+      "ascii_string": "7985848085845884",
+      "numeric_value": 7985848085845884
+    },
+    {
+      "original_string": "HISISASU",
+      "ascii_string": "7273837383658385",
+      "numeric_value": 7273837383658385
+    },
+    {
+      "original_string": "CCESSFUL",
+      "ascii_string": "6767698383708576",
+      "numeric_value": 6767698383708576
+    },
+    {
+      "original_string": "GAME.",
+      "ascii_string": "7165776946",
+      "numeric_value": 7165776946
+    }
+  ]
+}

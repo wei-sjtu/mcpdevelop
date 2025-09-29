@@ -1,0 +1,9 @@
+README.md
+main.py
+pyproject.toml
+wayspiritmcp_weather.egg-info/PKG-INFO
+wayspiritmcp_weather.egg-info/SOURCES.txt
+wayspiritmcp_weather.egg-info/dependency_links.txt
+wayspiritmcp_weather.egg-info/entry_points.txt
+wayspiritmcp_weather.egg-info/requires.txt
+wayspiritmcp_weather.egg-info/top_level.txt

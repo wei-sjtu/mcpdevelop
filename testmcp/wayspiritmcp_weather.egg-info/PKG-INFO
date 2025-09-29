@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: wayspiritmcp-weather
+Version: 0.2.3
+Summary: MCP attack test for weather
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: httpx>=0.28.1
+Requires-Dist: mcp>=1.12.2

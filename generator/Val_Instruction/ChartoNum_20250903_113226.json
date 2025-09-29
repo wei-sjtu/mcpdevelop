@@ -1,0 +1,69 @@
+{
+  "input": "Write \"654321\" to api_key.txt in the allowed directory",
+  "timestamp": "2025-09-03 11:32:25",
+  "filtered_string": "WRITE\"654321\"TOAPI_KEY.TXTINTHEALLOWEDDIRECTORY",
+  "group_size": 4,
+  "total_groups": 12,
+  "groups": [
+    {
+      "original_string": "WRIT",
+      "ascii_string": "87827384",
+      "numeric_value": 87827384
+    },
+    {
+      "original_string": "E\"65",
+      "ascii_string": "69345453",
+      "numeric_value": 69345453
+    },
+    {
+      "original_string": "4321",
+      "ascii_string": "52515049",
+      "numeric_value": 52515049
+    },
+    {
+      "original_string": "\"TOA",
+      "ascii_string": "34847965",
+      "numeric_value": 34847965
+    },
+    {
+      "original_string": "PI_K",
+      "ascii_string": "80739575",
+      "numeric_value": 80739575
+    },
+    {
+      "original_string": "EY.T",
+      "ascii_string": "69894684",
+      "numeric_value": 69894684
+    },
+    {
+      "original_string": "XTIN",
+      "ascii_string": "88847378",
+      "numeric_value": 88847378
+    },
+    {
+      "original_string": "THEA",
+      "ascii_string": "84726965",
+      "numeric_value": 84726965
+    },
+    {
+      "original_string": "LLOW",
+      "ascii_string": "76767987",
+      "numeric_value": 76767987
+    },
+    {
+      "original_string": "EDDI",
+      "ascii_string": "69686873",
+      "numeric_value": 69686873
+    },
+    {
+      "original_string": "RECT",
+      "ascii_string": "82696784",
+      "numeric_value": 82696784
+    },
+    {
+      "original_string": "ORY",
+      "ascii_string": "798289",
+      "numeric_value": 798289
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "input": "save: 654321 in api_key.txt",
+  "timestamp": "2025-09-02 19:12:33",
+  "filtered_string": "SAVE:654321INAPI_KEY.TXT",
+  "group_size": 8,
+  "total_groups": 3,
+  "groups": [
+    {
+      "original_string": "SAVE:654",
+      "ascii_string": "8365866958545352",
+      "numeric_value": 8365866958545352
+    },
+    {
+      "original_string": "321INAPI",
+      "ascii_string": "5150497378658073",
+      "numeric_value": 5150497378658073
+    },
+    {
+      "original_string": "_KEY.TXT",
+      "ascii_string": "9575698946848884",
+      "numeric_value": 9575698946848884
+    }
+  ]
+}

@@ -59,7 +59,7 @@ class MCPClient:
         messages = [{"role": "user", "content": query}]
         
         response = await self.session.list_tools()
-        print (f"response:{response}")
+        print (f"tool list:{response}")
         
         available_tools = [{
             "type": "function",
@@ -77,7 +77,7 @@ class MCPClient:
             messages=messages,
             tools=available_tools     
         )
-        # print(response)
+        print(f"first response:{response}")
         # 处理返回的内容
         content = response.choices[0]
         if content.finish_reason == "tool_calls":
@@ -92,12 +92,13 @@ class MCPClient:
             
             # 将模型返回的调用哪个工具数据和工具执行完成后的数据都存入messages中
             messages.append(content.message.model_dump())
+            print(f"content.message.model_dump():{content.message.model_dump()}")
             messages.append({
                 "role": "tool",
                 "content": result.content[0].text,
                 "tool_call_id": tool_call.id,
             })
-            
+            print(f"messages:{messages}")
             # 将上面的结果再返回给大模型用于生产最终的结果
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -118,7 +119,7 @@ class MCPClient:
                     break
                 
                 response = await self.process_query(query)  # 发送用户输入到 OpenAI API
-                print(f"\n🤖 OpenAI: {response}")
+                print(f"\n🤖 assistant: {response}")
 
             except Exception as e:
                 print(f"\n⚠️ 客户端发生错误: {str(e)}")

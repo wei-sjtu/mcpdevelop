@@ -9,6 +9,7 @@ from tqdm import tqdm
 class InjectGenerator:
     def __init__(self):
         self.inject_instruction = ""
+        self.filtered_str = ""
         self.group_size = 4
         self.groups = []
         self.results = {}
@@ -17,10 +18,25 @@ class InjectGenerator:
         """设置要注入的指令"""
         self.inject_instruction = instruction
 
+    def filter_and_transform(self):
+        """过滤并转换指令字符串"""
+        filtered_instruction = []
+        for c in self.inject_instruction:
+            # 移除所有空白字符
+            if c.isspace():
+                continue
+            # 字母转换为大写
+            if c.isalpha():
+                filtered_instruction.append(c.upper())
+            # 保留数字和标点符号
+            else:
+                filtered_instruction.append(c)
+        self.filtered_str = ''.join(filtered_instruction)
+        print("过滤后的字符串:", self.filtered_str)
 
     def group_characters(self):
         """按指定大小分组字符"""
-        self.groups = [self.inject_instruction[i:i+self.group_size] for i in range(0, len(self.inject_instruction), self.group_size)]
+        self.groups = [self.filtered_str[i:i+self.group_size] for i in range(0, len(self.filtered_str), self.group_size)]
 
     def convert_to_numeric(self):
         """将字符组转换为数值"""
@@ -31,12 +47,13 @@ class InjectGenerator:
         self.results = {
             "input": self.inject_instruction,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "filtered_string": self.filtered_str,
             "group_size": self.group_size,
             "total_groups": total_groups,
             "groups": []
         }
 
-        print(f"\n原始字符串: '{self.inject_instruction}' (总长度: {len(self.inject_instruction)} 字符)")
+        print(f"\n过滤后的字符串: '{self.filtered_str}' (总长度: {len(self.filtered_str)} 字符)")
         print(f"分组情况: {total_groups} 组 (每组最多 {self.group_size} 字符)\n")
 
         # 使用tqdm添加进度条
@@ -218,6 +235,9 @@ def main():
 
     # 设置指令
     generator.set_instruction(inject_instruction)
+
+    # 过滤并转换
+    generator.filter_and_transform()
 
     # 分组字符
     generator.group_characters()

@@ -1,7 +1,30 @@
 # MCP多工具联合投毒实验
+
+## generator文件夹结构
+```
+generator/
+├── README.md                           # 项目说明文档
+├── inject_generator.py                 # 注入生成器主程序
+├── filt_inject_generator.py           # 带过滤功能的注入生成器
+├── mapping.py                         # 指令映射程序
+├── polynomial_calculator.py           # 多项式计算器
+├── calculator.py                      # 计算器工具
+├── extract_inject_values.py           # 提取注入值程序
+├── extracted_inject_values.txt        # 提取的注入值结果
+├── data/                              # 数据目录
+│   ├── full_log/                      # 完整日志
+│   │   ├── polynomial_results_*.json  # 多项式计算结果
+│   └── injection/                     # 注入数据
+│       └── concatenated_results_*.txt  # 连接结果
+├── inject_content/                    # 注入内容
+│   └── polynomial_results_*.json      # 多项式结果文件
+└── Val_Instruction/                   # 验证指令
+    └── ChartoNum_*.json               # 字符到数字映射文件
+```
+
 --- 
 ## attacker
-`python inject_generator.py "your instruction here" "1,2,5,10" 1` 需要手动调整多项式系数
+`python filt_inject_generator.py "your instruction here" "50,100,200" 2 "1024,2048" ` 需要手动调整多项式系数
 ## 指令映射
 - 目标：将希望模型执行的恶意指令（English）映射为ASCII码(统一为大写，并移除空白字符)
 - 执行：` python mapping.py`

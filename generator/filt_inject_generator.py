@@ -9,6 +9,7 @@ from tqdm import tqdm
 class InjectGenerator:
     def __init__(self):
         self.inject_instruction = ""
+        self.filtered_str = ""
         self.group_size = 4
         self.groups = []
         self.results = {}
@@ -17,10 +18,21 @@ class InjectGenerator:
         """设置要注入的指令"""
         self.inject_instruction = instruction
 
+    def filter_and_transform(self):
+        """过滤并转换指令字符串"""
+        filtered_instruction = []
+        for c in self.inject_instruction:
+            # 仅将小写字母转换为大写，保留所有其他字符（包括空白字符）
+            if c.islower():
+                filtered_instruction.append(c.upper())
+            else:
+                filtered_instruction.append(c)
+        self.filtered_str = ''.join(filtered_instruction)
+        print("过滤后的字符串:", self.filtered_str)
 
     def group_characters(self):
         """按指定大小分组字符"""
-        self.groups = [self.inject_instruction[i:i+self.group_size] for i in range(0, len(self.inject_instruction), self.group_size)]
+        self.groups = [self.filtered_str[i:i+self.group_size] for i in range(0, len(self.filtered_str), self.group_size)]
 
     def convert_to_numeric(self):
         """将字符组转换为数值"""
@@ -31,12 +43,13 @@ class InjectGenerator:
         self.results = {
             "input": self.inject_instruction,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "filtered_string": self.filtered_str,
             "group_size": self.group_size,
             "total_groups": total_groups,
             "groups": []
         }
 
-        print(f"\n原始字符串: '{self.inject_instruction}' (总长度: {len(self.inject_instruction)} 字符)")
+        print(f"\n过滤后的字符串: '{self.filtered_str}' (总长度: {len(self.filtered_str)} 字符)")
         print(f"分组情况: {total_groups} 组 (每组最多 {self.group_size} 字符)\n")
 
         # 使用tqdm添加进度条
@@ -82,7 +95,7 @@ class InjectGenerator:
                 result += a * (x ** i)
         return int(result)
 
-    def calculate_polynomial_values_for_list(self, x_values=[1], degree=1):
+    def calculate_polynomial_values_for_list(self, x_values=[1], degree=1, coefficients=None):
         """计算x_values列表中每个元素的多项式值并生成综合结果"""
         min_coef = 1
         max_coef = 10000000
@@ -93,9 +106,24 @@ class InjectGenerator:
             print("错误: 未找到有效的numeric_value数据")
             sys.exit(1)
 
-        # 随机生成系数 (a₁到a_{t-1})
-        #coefficients = [random.randint(min_coef, max_coef) for _ in range(degree)]
-        coefficients = [3688103]
+        # 处理用户输入的系数
+        if coefficients is None:
+            print("错误: 必须提供系数列表")
+            sys.exit(1)
+        
+        if not isinstance(coefficients, list):
+            print("错误: 系数必须是列表格式")
+            sys.exit(1)
+        
+        if len(coefficients) != degree:
+            print(f"错误: 提供的系数数量({len(coefficients)})与多项式阶数({degree})不匹配")
+            sys.exit(1)
+        
+        if degree <= 0:
+            print("错误: 多项式阶数必须大于0")
+            sys.exit(1)
+        
+        print(f"使用用户提供的多项式系数 (degree={degree}): {coefficients}")
 
         # 存储所有结果
         all_results = []
@@ -219,6 +247,9 @@ def main():
     # 设置指令
     generator.set_instruction(inject_instruction)
 
+    # 过滤并转换
+    generator.filter_and_transform()
+
     # 分组字符
     generator.group_characters()
 
@@ -245,8 +276,34 @@ def main():
     # 获取多项式阶数 (如果提供)
     degree = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 
+    # 获取系数列表 (如果提供)
+    coefficients = None
+    if len(sys.argv) > 4:
+        try:
+            # 尝试解析为逗号分隔的系数列表
+            coefficients_str = sys.argv[4]
+            coefficients = [int(c.strip()) for c in coefficients_str.split(',')]
+            print(f"使用用户提供的系数: {coefficients}")
+        except:
+            print("无法解析系数参数，将提示用户输入")
+            coefficients = None
+    
+    # 如果没有提供系数，提示用户输入
+    if coefficients is None:
+        print(f"\n请输入 {degree} 个多项式系数 (用逗号分隔):")
+        print("例如: 对于 degree=2，输入: 1000,2000")
+        try:
+            coefficients_input = input("系数: ").strip()
+            coefficients = [int(c.strip()) for c in coefficients_input.split(',')]
+        except KeyboardInterrupt:
+            print("\n用户取消操作")
+            sys.exit(0)
+        except:
+            print("输入格式错误，使用默认系数")
+            coefficients = [1] * degree
+
     # 计算多项式值
-    generator.calculate_polynomial_values_for_list(x_values, degree)
+    generator.calculate_polynomial_values_for_list(x_values, degree, coefficients)
 
 if __name__ == "__main__":
     main()

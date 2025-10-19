@@ -199,45 +199,37 @@ async def ReconstructCalculator(data: dict) -> str:
         # 如果转换失败，返回空字符串
         return ""
 
-    # threshold 是输入字典的长度
-    threshold = len(points)
-    
-    if threshold < 2:
+    if len(points) < 2:
         # 如果点数少于2，无法确定多项式
         return ""
 
-    # 多项式次数为 threshold-1
-    polynomial_degree = threshold - 1
+    # 取每个x对应的第一个y值来构建点，用于计算系数b
+    x1, y_list1 = points[0]
+    x2, y_list2 = points[1]
 
-    # 取每个x对应的第一个y值来构建点，用于计算多项式系数
-    # 使用前 threshold 个点来确定多项式系数
-    coefficient_points = []
-    for i in range(min(threshold, len(points))):
-        x, y_list = points[i]
-        y_first = y_list[0] if y_list else 0
-        coefficient_points.append((x, y_first))
+    # 使用每个列表中的第一个y值来计算系数
+    y1_first = y_list1[0] if y_list1 else 0
+    y2_first = y_list2[0] if y_list2 else 0
 
-    # 计算多项式系数（除了常数项）
-    try:
-        coefficients = _solve_polynomial_coefficients(coefficient_points, polynomial_degree)
-    except (ValueError, ZeroDivisionError):
+    # 确保是整系数
+    if x2 - x1 == 0:
         return ""
 
-    # 获取第一个点的x值和对应的y列表
-    x1, y_list1 = points[0]
+    # 计算系数b（斜率）
+    try:
+        b = (y2_first - y1_first) // (x2 - x1)  # 使用整数除法确保整系数
+    except (ZeroDivisionError, ValueError):
+        return ""
 
     # 对于x1对应的y列表中的每个值，计算对应的常数项
     result = []
     for y in y_list1:
         try:
-            # 计算常数项：a = y - sum(coeff_i * x^i) for i from 1 to degree
-            constant_term = y
-            for i in range(1, polynomial_degree + 1):
-                if i - 1 < len(coefficients):
-                    constant_term -= coefficients[i - 1] * (x1 ** i)
-            result.append(constant_term)
-        except (TypeError, ValueError, OverflowError):
-            # 如果计算过程中出现错误，跳过该值
+            # 对于线性多项式 y = a + b*x，常数项 a = y - b*x
+            a = y - b * x1
+            result.append(a)
+        except (TypeError, ValueError):
+            # 如果计算过程中出现类型错误，跳过该值
             continue
 
     # 将重构值列表转换为ASCII字符串
@@ -264,93 +256,6 @@ async def ReconstructCalculator(data: dict) -> str:
                 continue
 
     return decoded_string
-
-
-def _solve_polynomial_coefficients(points: list, degree: int) -> list:
-    """
-    使用给定的点求解多项式系数（除了常数项）。
-    多项式形式：y = a0 + a1*x + a2*x^2 + ... + an*x^n
-    返回 [a1, a2, ..., an]（不包含常数项a0）
-    
-    :param points: list of (x, y) tuples
-    :param degree: polynomial degree
-    :return: list of coefficients [a1, a2, ..., an]
-    """
-    if len(points) < degree + 1:
-        raise ValueError("Not enough points to determine polynomial coefficients")
-    
-    # 构建线性方程组 Ax = b
-    # 其中 A 是范德蒙德矩阵，x 是系数向量 [a0, a1, ..., an]，b 是 y 值向量
-    
-    n = degree + 1  # 总系数个数（包括常数项）
-    A = []
-    b = []
-    
-    for i, (x, y) in enumerate(points[:n]):
-        row = []
-        for j in range(n):
-            row.append(x ** j)
-        A.append(row)
-        b.append(y)
-    
-    # 使用高斯消元法求解线性方程组
-    coefficients = _gaussian_elimination(A, b)
-    
-    # 返回除了常数项之外的所有系数
-    return coefficients[1:] if len(coefficients) > 1 else []
-
-
-def _gaussian_elimination(A: list, b: list) -> list:
-    """
-    使用高斯消元法求解线性方程组 Ax = b
-    
-    :param A: coefficient matrix
-    :param b: constant vector
-    :return: solution vector x
-    """
-    n = len(A)
-    
-    # 创建增广矩阵
-    augmented = []
-    for i in range(n):
-        row = A[i] + [b[i]]
-        augmented.append(row)
-    
-    # 前向消元
-    for i in range(n):
-        # 寻找主元
-        max_row = i
-        for k in range(i + 1, n):
-            if abs(augmented[k][i]) > abs(augmented[max_row][i]):
-                max_row = k
-        
-        # 交换行
-        augmented[i], augmented[max_row] = augmented[max_row], augmented[i]
-        
-        # 检查主元是否为0
-        if abs(augmented[i][i]) < 1e-10:
-            raise ValueError("Matrix is singular")
-        
-        # 消元
-        for k in range(i + 1, n):
-            factor = augmented[k][i] / augmented[i][i]
-            for j in range(i, n + 1):
-                augmented[k][j] -= factor * augmented[i][j]
-    
-    # 回代求解
-    x = [0] * n
-    for i in range(n - 1, -1, -1):
-        x[i] = augmented[i][n]
-        for j in range(i + 1, n):
-            x[i] -= augmented[i][j] * x[j]
-        x[i] /= augmented[i][i]
-    
-    # 转换为整数系数（如果可能）
-    for i in range(len(x)):
-        if abs(x[i] - round(x[i])) < 1e-10:
-            x[i] = int(round(x[i]))
-    
-    return x
 
 
 @mcp.tool()

@@ -15,7 +15,7 @@
 ## python 项目发布教程
 - `uv pip install build twine`
 - `python -m build`
-- `python -m twine upload dist/*`
+- `python -m twine upload dist/waysp*`
 - 输入api key
 
 ## uv 命令使用
